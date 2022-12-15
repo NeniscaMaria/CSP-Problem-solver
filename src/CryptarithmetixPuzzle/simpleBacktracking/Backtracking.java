@@ -141,7 +141,7 @@ public class Backtracking {
       return solutions;
     }
     // We start assigning each digit to each the letter and try to solve.
-    for (int digit = 0; digit <= 10; digit++) {
+    for (int digit = 0; digit < 10; digit++) {
       if (assignLetterToDigit(nodeIndex, digit)) {
         // Recursively search for more solutions
         solutions.addAll(runBacktracking());

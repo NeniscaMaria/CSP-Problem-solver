@@ -14,9 +14,11 @@ public class AllVarsConstraint implements Constraint {
    * This constraint formulates that all letters (variables) should have a unique
    * digit (value) assigned to them.
    */
+  private Integer noOfCarries;
   private List<Variable> scope;
 
-  public AllVarsConstraint(List<Variable> scope) {
+  public AllVarsConstraint(Integer noOfCarries, List<Variable> scope) {
+    this.noOfCarries=noOfCarries;
     this.scope = scope;
   }
 
@@ -36,6 +38,8 @@ public class AllVarsConstraint implements Constraint {
     }
     HashSet<Object> uniqueValues = new HashSet<>(assignment.getVariableToValue().values());
 
-    return (nullValues || scope.size() >= set.size()) && (uniqueValues.size() <= assignment.getVariableToValue().size()  && assignment.getVariableToValue().size() <= uniqueValues.size() +2 );
+    return (nullValues || scope.size() >= set.size()) &&
+        (uniqueValues.size() <= assignment.getVariableToValue().size()  &&
+            assignment.getVariableToValue().size() <= uniqueValues.size() +noOfCarries);
   }
 }

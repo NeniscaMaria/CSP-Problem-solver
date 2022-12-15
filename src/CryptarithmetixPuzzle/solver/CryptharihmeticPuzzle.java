@@ -85,7 +85,7 @@ public class CryptharihmeticPuzzle extends CSP {
         filter(var -> var.getName().equals(name)).collect(Collectors.toList()).get(0);
   }
 
-  private void getListOfConstraints(ArrayList<String> puzzleWords){
+  private void getListOfConstraints(ArrayList<String> puzzleWords) {
     /**
      * This function generates the constraints for our cryptarithmetic puzzle.
      */
@@ -101,8 +101,8 @@ public class CryptharihmeticPuzzle extends CSP {
     word3.reverse();
 
     // the number of carries in a sum is equal to the number of digits
-    // in the total value - 2
-    int noOfCarries = word3.length() - 2;
+    // in the total value - 1
+    int noOfCarries = word3.length() - 1;
     /**
      * After we reversed the words of the puzzle, now it looks like this:
      * OWT +  <-- first word
@@ -113,8 +113,8 @@ public class CryptharihmeticPuzzle extends CSP {
      */
     // in carryNumber we keep the current carry that we are processing
     int carryNumber = 1;
-    for(int i=0; i<word3.length(); i++) {
-      /* Ee get the current letter form each word. It is possible that we will have an
+    for (int i = 0; i < word3.length(); i++) {
+      /* We get the current letter form each word. It is possible that we will have an
       index that is larger than some words' length, and we need to treat this case
        */
       Variable word1Letter = null;
@@ -125,27 +125,27 @@ public class CryptharihmeticPuzzle extends CSP {
       ArrayList<Variable> variableScope = new ArrayList<>();
       variableScope.add(word3Letter);
 
-      if(i<word1.length()){
+      if (i < word1.length()) {
         // and letter from word1 to scope only if i is in bounds for word1
         String letter = Character.toString(word1.charAt(i));
         word1Letter = getVariable(letter);
-        if(!variableScope.contains(word1Letter)){
+        if (!variableScope.contains(word1Letter)) {
           variableScope.add(word1Letter);
         }
       }
-      if(i<word2.length()){
+      if (i < word2.length()) {
         // and letter from word2 to scope only if i is in bounds for word2
         String letter = Character.toString(word2.charAt(i));
         word2Letter = getVariable(letter);
-        if(!variableScope.contains(word2Letter)){
+        if (!variableScope.contains(word2Letter)) {
           variableScope.add(word2Letter);
         }
       }
 
       // we add the carries to the variableScope
-      if(carryNumber > noOfCarries){
+      if (carryNumber > noOfCarries) {
         variableScope.add(getVariable("c" + noOfCarries));
-      }else {
+      } else {
         for (int j = 1; j <= carryNumber; j++) {
           variableScope.add(getVariable("c" + j));
         }
@@ -153,17 +153,17 @@ public class CryptharihmeticPuzzle extends CSP {
 
       //define the current constraint
       Constraint constraint;
-      if(i == word3.length()){
-        if(word1Letter==null && word2Letter==null) {
+      if (i == word3.length()) {
+        if (word1Letter == null && word2Letter == null) {
           // case TO + TO = FOR. When we get to F, we only need to add the value of F + a possible carry
           constraint = new OneLetterOneCarryConstraint(word3Letter, getVariable("c" + noOfCarries));
-        }else{
+        } else {
           // case 213 + 93 = 306, or 93 + 213 = 306. Here we need to add the carry to the remaining
           // digit from the left side, which it needs to equal the remaining digit form the right side
           Variable lambdaLetter = word1Letter == null ? word2Letter : word1Letter;
-          constraint =  new TwoLettersOneCarry(word3Letter, lambdaLetter,getVariable("c" + noOfCarries) );
+          constraint = new TwoLettersOneCarry(word3Letter, lambdaLetter, getVariable("c" + noOfCarries));
         }
-      }else {
+      } else {
         if (carryNumber == 1) {
           // if we are at the first carry, we only need to take into account one carry number in the constraint
           int lambdaCarry = carryNumber;
@@ -173,12 +173,16 @@ public class CryptharihmeticPuzzle extends CSP {
           // when we get to higher indexes in the final word sum, we may not have a letter from the first 2 words
           // we need to treat this here also. ex: 291 + 9 = 300, or 9 + 291 = 300
           int carry = Math.min(carryNumber, noOfCarries);
-          int lambdaCarry1 = carry - 1;
+          int lambdaCarry1 = noOfCarries <= 1 ? noOfCarries : carry - 1;
           if (word1Letter != null && word2Letter != null) {
-            constraint = new ThreeWordsTwoCarries(word1Letter, word2Letter, word3Letter, getVariable("c" + lambdaCarry1), getVariable("c" + carry));
+            if (noOfCarries == 1) {
+              constraint = new ThreeLettersOneCarry(word1Letter, word2Letter, word3Letter, getVariable("c1"));
+            } else {
+              constraint = new ThreeWordsTwoCarries(word1Letter, word2Letter, word3Letter, getVariable("c" + lambdaCarry1), getVariable("c" + carry));
+            }
           } else {
             if (word1Letter == null && word2Letter == null) {
-              constraint = new OneLetterOneCarryConstraint(word3Letter, getVariable("c"+carry));
+              constraint = new OneLetterOneCarryConstraint(word3Letter, getVariable("c" + carry));
             } else {
               Variable lambdaLetter = word1Letter == null ? word2Letter : word1Letter;
               constraint = new TwoLettersTwoCarries(lambdaLetter, word3Letter, getVariable("c" + lambdaCarry1), getVariable("c" + carry));
@@ -188,10 +192,10 @@ public class CryptharihmeticPuzzle extends CSP {
       }
 
       this.addConstraint(constraint);
-      carryNumber+=1;
+      carryNumber += 1;
     }
     // after the sum constraints are processed, we add the constraint involving all the variables
-    this.addConstraint(new AllVarsConstraint(getVariables()));
+    this.addConstraint(new AllVarsConstraint(noOfCarries, getVariables()));
   }
 
   public CryptharihmeticPuzzle(String puzzle) {
@@ -203,14 +207,24 @@ public class CryptharihmeticPuzzle extends CSP {
 
   private void printSolutions(List<Assignment> solutions){
     /**
-     * This function displays the solutions of a puzzle.
+     * This function displays the solutions of a puzzle. If there are more
+     * than 10 solutions, we display only 10 of them, randomly.
      * INPUT: the list with solutions
      */
     if(solutions.size() != 0){
-      for(Assignment solution: solutions) {
-        solution.printSolution(puzzle);
-      }
       System.out.println(ANSI_GREEN + "No. of solutions: "+ solutions.size() + ANSI_RESET);
+      if(solutions.size() >= 10 ){
+        System.out.println("There are too many solutions. Displaying just 10 random solutions.");
+        for(int i=0; i< 10; i++) {
+          int index = (int) (Math.random() * solutions.size());
+          solutions.get(index).printSolution(puzzle);
+          solutions.remove(index);
+        }
+      }else {
+        for (Assignment solution : solutions) {
+          solution.printSolution(puzzle);
+        }
+      }
     }
     else {
       System.out.println(ANSI_RED + "No solution found for this puzzle." + ANSI_RESET);
@@ -247,13 +261,9 @@ public class CryptharihmeticPuzzle extends CSP {
     */
     double startTime = System.currentTimeMillis();
     Runtime runtime = Runtime.getRuntime();
-    Backtracking backtracking = new Backtracking();
-    Integer noOfSolutions = backtracking.solve(puzzle);
-    if(noOfSolutions == 0) {
-      System.out.println(ANSI_RED + "No solution found for this puzzle." + ANSI_RESET);
-    }else{
-      System.out.println(ANSI_GREEN + "No. of solutions: "+ noOfSolutions + ANSI_RESET);
-    }
-    this.usedTimeMemory(startTime, runtime);
+    CSPSolver solver = new CSPSolver();
+    List<Assignment> solutions = solver.solveWithSimpleBT(this.copy());
+    printSolutions(solutions);
+    usedTimeMemory(startTime, runtime);
   }
 }

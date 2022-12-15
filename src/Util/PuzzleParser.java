@@ -32,7 +32,7 @@ public class PuzzleParser {
     }
 
     ArrayList<String> words = getWordsFromPuzzle(puzzle);
-    Integer noOfCarries = words.get(2).length() - 2;
+    Integer noOfCarries = words.get(2).length() - 1;
     for(int i=1; i<=noOfCarries; i++){
       letters.add("c"+i);
     }

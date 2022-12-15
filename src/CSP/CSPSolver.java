@@ -24,6 +24,22 @@ public class CSPSolver extends Solution {
      * INPUT: the csp we want to solve
      * OUtPUT: a list of solutions for the csp
      */
+    Assignment a = new Assignment();
+    a.setAssignment(new Variable("t"), 1);
+    a.setAssignment(new Variable("w"), 3);
+    a.setAssignment(new Variable("o"), 2);
+    a.setAssignment(new Variable("f"), 0);
+    a.setAssignment(new Variable("u"), 6);
+    a.setAssignment(new Variable("r"), 4);
+    a.setAssignment(new Variable("c1"), 0);
+    a.setAssignment(new Variable("c2"), 0);
+    a.setAssignment(new Variable("c3"), 0);
+    ArrayList<Constraint> cfailed = new ArrayList<>();
+    for(Constraint c: csp.getConstraints()){
+      if(!c.isSatisfiedWith(a)){
+        cfailed.add(c);
+      }
+    }
     return recursiveBackTrackingSearch(csp, new Assignment());
   }
 

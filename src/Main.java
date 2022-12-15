@@ -23,6 +23,12 @@ public class Main {
   private static String readPuzzle() {
     // Reads the puzzle from the keyboard and returns it.
     Scanner myObj = new Scanner(System.in);
+    System.out.println("Some cryptarithemtic puzzle examples:");
+    System.out.println("to + to = for");
+    System.out.println("cp + is = fun");
+    System.out.println("two + two = four");
+    System.out.println("odd + odd = even");
+    System.out.println("usa + ussr = peace");
     System.out.print("Enter puzzle or 'x' for back to menu: ");
     return myObj.nextLine();
   }

@@ -24,7 +24,7 @@ public class OneLetterOneCarryConstraint implements Constraint {
      */
     this.letter = letter;
     this.carry = carry;
-    scope = new ArrayList<Variable>(2);
+    scope = new ArrayList<>(2);
     scope.add(letter);
     scope.add(carry);
   }
