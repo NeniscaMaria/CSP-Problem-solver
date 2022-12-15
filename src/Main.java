@@ -70,6 +70,7 @@ public class Main {
 
   private static void zebraPuzzle() {
     ZebraPuzzleCSP solver = new ZebraPuzzleCSP();
+    solveUsingBackTracking(solver);
     solveUsingAC3BackTracking(solver);
     solveUsingFCBackTracking(solver);
   }

@@ -1,5 +1,6 @@
 package ZebraPuzzle.solver;
 import CSP.*;
+import CryptarithmetixPuzzle.simpleBacktracking.Backtracking;
 import ZebraPuzzle.constraints.*;
 import ZebraPuzzle.constraints.AllVarsConstraint;
 
@@ -119,6 +120,18 @@ public class ZebraPuzzleCSP extends CSP{
     super(collectVariables());
     generateTheDomain();
     generateListOfConstraints();
+  }
+
+  public void solveSimpleBT(){
+    /**
+     * This function solves the zebra puzzle using a simple backtracking algorithm.
+     */
+    double startTime = System.currentTimeMillis();
+    Runtime runtime = Runtime.getRuntime();
+    CSPSolver solver = new CSPSolver();
+    List<Assignment> solutions = solver.solveWithSimpleBT(this.copy());
+    printSolution(solutions);
+    usedTimeMemory(startTime, runtime);
   }
 
   public void solveAC3() {

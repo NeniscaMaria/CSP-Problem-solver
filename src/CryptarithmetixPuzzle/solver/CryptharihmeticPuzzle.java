@@ -241,9 +241,10 @@ public class CryptharihmeticPuzzle extends CSP {
     usedTimeMemory(startTime, runtime);
   }
 
-  public void solveSimpleBT(){/**
-   * This function solves the current cryptarithmetic puzzle using a simple backtracking algorithm.
-   */
+  public void solveSimpleBT(){
+    /**
+      * This function solves the current cryptarithmetic puzzle using a simple backtracking algorithm.
+    */
     double startTime = System.currentTimeMillis();
     Runtime runtime = Runtime.getRuntime();
     Backtracking backtracking = new Backtracking();

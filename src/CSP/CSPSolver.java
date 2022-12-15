@@ -8,6 +8,16 @@ public class CSPSolver extends Solution {
    * This class contains the implementations of some algorithms that solve a CSP.
    */
 
+  public List<Assignment> solveWithSimpleBT(CSP csp) {
+    /**
+     * This function solves a given CSP using simple back tracking
+     * INPUT: the csp we want to solve
+     * OUtPUT: a list of solutions for the csp
+     */
+    return simpleBacktracking(csp, new Assignment());
+  }
+
+
   public List<Assignment> solveWithFC(CSP csp) {
     /**
      * This function solves a given CSP using forward checking back tracking
@@ -16,6 +26,7 @@ public class CSPSolver extends Solution {
      */
     return recursiveBackTrackingSearch(csp, new Assignment());
   }
+
   public Assignment solveWithFCOneSolution(CSP csp) {
     /**
      * This function solves a given CSP using forward checking back tracking
@@ -66,12 +77,13 @@ public class CSPSolver extends Solution {
         // If the assignment is consistent, we try to reduce the domain of the other variables
         if (assignment.isConsistent(csp.getConstraints(var))) {
           DomainRestore info = inference(var, assignment, csp);
-          if (!info.isEmpty()){}
+          if (!info.isEmpty()) {
+          }
           if (!info.isEmptyDomainFound()) {
             Assignment newAssignment = new Assignment(assignment);
             List<Assignment> sols = recursiveBackTrackingSearch(csp, newAssignment);
             // If a solution is found, add it to the list of solutions
-            if(!sols.isEmpty()){
+            if (!sols.isEmpty()) {
               solutions.addAll(new ArrayList<>(sols));
             }
           }
@@ -96,7 +108,8 @@ public class CSPSolver extends Solution {
 
         if (assignment.isConsistent(csp.getConstraints(var))) {
           DomainRestore info = inference(var, assignment, csp);
-          if (!info.isEmpty()){}
+          if (!info.isEmpty()) {
+          }
           if (!info.isEmptyDomainFound()) {
             result = recursiveBackTrackingSearchFirstSolution(csp, assignment);
             if (result != null)
@@ -138,5 +151,36 @@ public class CSPSolver extends Solution {
     return new AC3().reduceDomains(var, assignment.getAssignment(var), csp, assignment);
   }
 
+  private List<Assignment> simpleBacktracking(CSP csp, Assignment assignment) {
+    /**
+     * This function implements a simple backtracking algorithm to solve a CSP.
+     * INPUT: csp = the csp to be solved
+     *        assignment = the current assignment
+     * OUTPUT: a list of solutions
+     */
+    List<Assignment> solutions = new ArrayList<>();
+    if (assignment.isComplete(csp.getVariables())) {
+      // If all variables are assigned, add the assignment to the list of solutions
+      solutions.add(assignment);
+    } else {
+      // Select an unassigned variable
+      Variable var = selectUnassignedVariable(assignment, csp);
+      // Try each value in the variable's domain in the order specified by the orderDomainValues function
+      for (Object value : orderDomainValues(var, csp)) {
+        assignment.setAssignment(var, value);
 
+        // If the assignment is consistent, we continue the backtracking
+        if (assignment.isConsistent(csp.getConstraints(var))) {
+          Assignment newAssignment = new Assignment(assignment);
+          List<Assignment> sols = simpleBacktracking(csp, newAssignment);
+          // If a solution is found, we add it to the list of solutions
+          if (!sols.isEmpty()) {
+            solutions.addAll(new ArrayList<>(sols));
+          }
+        }
+        assignment.removeAssignment(var);
+      }
+    }
+    return solutions;
+  }
 }
