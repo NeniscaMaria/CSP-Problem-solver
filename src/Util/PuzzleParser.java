@@ -19,8 +19,8 @@ public class PuzzleParser {
   }
 
   public ArrayList<String> parsePuzzle() {
-    /** This function takes the puzzle we want to solve and extracts the unique letters into nodes
-     * OUTPUT: the list of letter nodes with unique letters from the puzzle
+    /** This function takes the puzzle we want to solve and extracts the unique letters
+     * OUTPUT: the list with unique letters from the puzzle
      */
 
     ArrayList<String> letters= new ArrayList<>();
@@ -57,6 +57,13 @@ public class PuzzleParser {
   }
 
   public static boolean validatePuzzle(String puzzle){
+    /**
+     * This function validates a given puzzle. It checks that the first 2 words have a valid length (!=0)
+     * and that the sum word length is not less than max of the first 2 words and that it is not greater than
+     * that max +1
+     * INPUT: the puzzle string
+     * OUTPUT: True, if it is valid. False, otherwise
+     */
     ArrayList<String> words = getWordsFromPuzzle(puzzle);
     int word1Len = words.get(0).length();
     int word2Len = words.get(1).length();

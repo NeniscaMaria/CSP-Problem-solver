@@ -2,7 +2,7 @@ package CryptarithmetixPuzzle.simpleBacktracking.utils;
 
 public class Node {
   /**
-   * This class is used to represent a (letter, digit) pair in our algorithm.
+   * This class is used to represent a (letter, digit) pair in our simple BT algorithm.
    */
   // the digit value that is assigned to the letter
   private int v;

@@ -1,6 +1,10 @@
 package CSP;
 
 public class Variable {
+  /**
+   * This class models a variable from a CSP.
+   */
+  // the name of the variable
   private String name;
 
   public Variable(String name) {

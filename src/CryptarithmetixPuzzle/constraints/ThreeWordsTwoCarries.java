@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreeWordsTwoCarries implements Constraint {
+  /**
+   * This class formulates the constraint for the sum of 2 digits and a carry must
+   * be equal to the 3rd digit + 10*carry2.
+   * ex: TWO+TWO=FOUR <=> 132+132=0264
+   * This constraint stipulates that T+T+C1=O+10*C2 <=> 1+1+0 = 2+10*0
+   */
   private Variable letter1;
   private Variable letter2;
   private Variable letter3;

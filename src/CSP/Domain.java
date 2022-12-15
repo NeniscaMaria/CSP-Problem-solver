@@ -1,13 +1,15 @@
 package CSP;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import Util.*;
 
 public class Domain implements Iterable<Object> {
+  /**
+   * This class models the domain of a variable in a CSP
+   */
 
+  // the list of values that belong to the domain
   private Object[] values;
 
   public Domain(List<?> values) {
@@ -23,10 +25,6 @@ public class Domain implements Iterable<Object> {
 
   public int size() {
     return values.length;
-  }
-
-  public Object get(int index) {
-    return values[index];
   }
 
   public boolean isEmpty() {

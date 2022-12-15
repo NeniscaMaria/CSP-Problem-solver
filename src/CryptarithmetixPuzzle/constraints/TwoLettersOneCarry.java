@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TwoLettersOneCarry implements Constraint {
+  /**
+   * This class formulates the constraint that one digit is equal to carry + another digit
+   * ex:  213 + 93 = 306, or 93 + 213 = 306 <=> AB + CIB = BOD.
+   * 3 = 2+1 <=> B = C + 1
+ */
   private Variable letter1;
   private Variable letter2;
   private Variable carry;

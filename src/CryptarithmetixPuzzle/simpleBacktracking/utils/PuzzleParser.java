@@ -1,7 +1,5 @@
 package CryptarithmetixPuzzle.simpleBacktracking.utils;
 
-import CryptarithmetixPuzzle.simpleBacktracking.utils.Node;
-
 import java.util.ArrayList;
 
 public class PuzzleParser {
@@ -61,23 +59,5 @@ public class PuzzleParser {
     String sumResult = puzzle.substring(puzzle.indexOf("=") + 1);
     words.add(sumResult.trim());
     return words;
-  }
-
-  public static boolean validatePuzzle(String puzzle){
-    ArrayList<String> words = getWordsFromPuzzle(puzzle);
-    int word1Len = words.get(0).length();
-    int word2Len = words.get(1).length();
-    int word3Len = words.get(2).length();
-    int maxLengthRightSide = Math.max(word1Len, word2Len);
-    return word3Len <= maxLengthRightSide+1 && word1Len != 0 && word2Len != 0 && word3Len != 0;
-  }
-
-  public String getUniqueLetters(){
-    ArrayList<Node> parsed = parsePuzzle();
-    String uniques = "";
-    for(Node node:parsed){
-      uniques+=node.getChar();
-    }
-    return uniques;
   }
 }

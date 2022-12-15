@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 
 public class AllVarsConstraint implements Constraint {
+  /**
+   * Class that represents the all variables constraint for the Cryptarithemtic puzzle/
+   * This constraint formulates that all letters (variables) should have a unique
+   * digit (value) assigned to them.
+   */
   private List<Variable> scope;
 
   public AllVarsConstraint(List<Variable> scope) {

@@ -1,29 +1,58 @@
 package ZebraPuzzle.solver;
 import CSP.*;
-import CryptarithmetixPuzzle.constraints.*;
 import ZebraPuzzle.constraints.*;
 import ZebraPuzzle.constraints.AllVarsConstraint;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ZebraPuzzleCSP extends CSP{
+  /**
+   * This class models a solver for the following zebra puzzle:
+   * There are five houses.
+   * The English man lives in the red house.
+   * The Swede has a dog.
+   * The Dane drinks tea.
+   * The green house is immediate to the left of the white house.
+   * They drink coffee in the green house.
+   * The man who smokes Pall Mall has birds.
+   * In the yellow house they smoke Dunhill.
+   * In the middle house they drink milk.
+   * The Norwegian lives in the first house.
+   * The man who smokes Blend lives in the house next to the house with cats.
+   * In a house next to the house where they have a horse, they smoke Dunhill.
+   * The man who smokes Blue Master drinks beer.
+   * The German smokes Prince.
+   * The Norwegian lives next to the blue house.
+   * They drink water in a house next to the house where they smoke Blend.
+   */
+  // defining some colors for printing to console
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_GREEN = "\u001B[32m";
   public static final String ANSI_RED = "\u001B[31m";
+  // defining the puzzle constants
   private static final ArrayList<Object> orders = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
   private static final ArrayList<String> nations = new ArrayList<>(Arrays.asList("English", "Danish", "German", "Swedish", "Norwegian"));
   private static final ArrayList<String> animals = new ArrayList<>(Arrays.asList("Zebra", "Horse", "Birds", "Dog", "Cats"));
   private static final ArrayList<String> drinks = new ArrayList<>(Arrays.asList("Coffee", "Tea", "Beer", "Water", "Milk"));
   private static final ArrayList<String> cigarettes = new ArrayList<>(Arrays.asList("Pall Mall", "Blend", "Blue Master", "Prince", "Dunhill"));
   private static final ArrayList<String> colors = new ArrayList<>(Arrays.asList("Red", "Green", "White", "Blue", "Yellow"));
+  // a dictionary that maps each entity name (nations, animals, drinks, cigarettes, colors to its notation
   private static HashMap<String, String> nameMapping = new HashMap<>();
+  // a dictionary that maps each notation to the name of the entity
   private static HashMap<String, String> notationMapping = new HashMap<>();
-  private Assignment assignments = new Assignment();
 
   private static List<Variable> collectVariables() {
+    /**
+     * This function collects all the variables for the zebra CSP.
+     * Each entity is mapped to a notation. Example:
+     * - English - N1
+     * - Danish - N2,
+     * - Zebra - A1
+     * - Horse - A2
+     * - and so on
+     */
     List<Variable> variables = new ArrayList<Variable>();
     for(int i=0; i<nations.size(); i++){
       nameMapping.put(nations.get(i), "N"+i);
@@ -55,6 +84,11 @@ public class ZebraPuzzleCSP extends CSP{
   }
 
   private void generateTheDomain(){
+    /**
+     * This function generates the domain of the variables.
+     * Each variable can be assigned only the values from the orders list.
+     * This means that each entity can be assigned to any house (at the beginning).
+     */
     Domain orders = new Domain(this.orders);
     for (Variable var : getVariables()) {
       setDomain(var, orders);
@@ -64,27 +98,22 @@ public class ZebraPuzzleCSP extends CSP{
 
 
   private void generateListOfConstraints(){
-    this.addConstraint(new NationColor(nameMapping.get("English"), nameMapping.get("Red")));
-    this.addConstraint(new NationAnimal(nameMapping.get("Swedish"), nameMapping.get("Dog")));
-    this.addConstraint(new NationDrink(nameMapping.get("Danish"), nameMapping.get("Tea")));
-    this.addConstraint(new ColorDrink(nameMapping.get("Green"), nameMapping.get("Coffee")));
-    this.addConstraint(new AnimalsCigarettes(nameMapping.get("Pall Mall"), nameMapping.get("Birds")));
-    this.addConstraint(new ColorCigarettes(nameMapping.get("Dunhill"), nameMapping.get("Yellow")));
-    this.addConstraint(new OrderDrink(3, nameMapping.get("Milk")));
-    this.addConstraint(new NationOrder(1, nameMapping.get("Norwegian")));
-    this.addConstraint(new DrinkCigarettes(nameMapping.get("Blue Master"), nameMapping.get("Beer")));
-    this.addConstraint(new NationCigarettes(nameMapping.get("Prince"), nameMapping.get("German")));
-    this.addConstraint(new OrderColor(2, nameMapping.get("Blue")));
+    /**
+     * Generating the list of constraints based on the puzzle definition.
+     */
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("English"), nameMapping.get("Red")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Swedish"), nameMapping.get("Dog")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Danish"), nameMapping.get("Tea")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Green"), nameMapping.get("Coffee")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Pall Mall"), nameMapping.get("Birds")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Dunhill"), nameMapping.get("Yellow")));
+    this.addConstraint(new VariableOrderConstraint(3, nameMapping.get("Milk")));
+    this.addConstraint(new VariableOrderConstraint(1, nameMapping.get("Norwegian")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Blue Master"), nameMapping.get("Beer")));
+    this.addConstraint(new TwoVariableConstraint(nameMapping.get("Prince"), nameMapping.get("German")));
+    this.addConstraint(new VariableOrderConstraint(2, nameMapping.get("Blue")));
     this.addConstraint(new AllVarsConstraint(this.getVariables()));
-
-
   }
-
-  private void assignVar(String varName, Object value){
-    assignments.setAssignment(new Variable(varName), value);
-
-  }
-
 
   public ZebraPuzzleCSP() {
     super(collectVariables());

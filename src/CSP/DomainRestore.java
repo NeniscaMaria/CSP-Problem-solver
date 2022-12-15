@@ -5,20 +5,20 @@ import java.util.HashSet;
 import java.util.List;
 import Util.*;
 
-
 public class DomainRestore {
+  /**
+   * This class models a reduced domain in a CSP.
+   */
+  // a list of pairs that have the variable and the domain of said variable
   private List<Pair<Variable, Domain>> savedDomains;
+  // the set of variables for which the domain has changed
   private HashSet<Variable> affectedVariables;
+  // flag that signals whether an empty domain was found or not
   private boolean emptyDomainObserved;
 
   public DomainRestore() {
     savedDomains = new ArrayList<>();
     affectedVariables = new HashSet<>();
-  }
-
-  public void clear() {
-    savedDomains.clear();
-    affectedVariables.clear();
   }
 
   public boolean isEmpty() {
@@ -27,6 +27,12 @@ public class DomainRestore {
 
 
   public void storeDomainFor(Variable var, Domain domain) {
+    /**
+     * This function updates the domain of a variable to the list, if the domain of that variable was
+     * not already modified, and adds the variable to the affectedVariale list.
+     * INPUT: var = the variable for which we add a domain
+     *        domain = the domain of the variable
+     */
     if (!affectedVariables.contains(var)) {
       savedDomains.add(new Pair<>(var, domain));
       affectedVariables.add(var);
@@ -38,6 +44,7 @@ public class DomainRestore {
   }
 
   public DomainRestore compactify() {
+    //This function resets the affectedVariables field, and returns the current instance.
     affectedVariables = null;
     return this;
   }
@@ -51,6 +58,10 @@ public class DomainRestore {
   }
 
   public void restoreDomains(CSP csp) {
+    /**
+     * This function resets the list of domains.
+     * INPUT: csp = the CSP from which we want to restore the domains
+     */
     for (Pair<Variable, Domain> pair : getSavedDomains())
       csp.setDomain(pair.getFirst(), pair.getSecond());
   }

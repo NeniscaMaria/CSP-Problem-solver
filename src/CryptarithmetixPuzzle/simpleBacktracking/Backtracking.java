@@ -8,7 +8,8 @@ import java.util.List;
 
 public class Backtracking {
   /**
-   * This class contains the logic for solving a cryptarithmetic puzzle.
+   * This class contains the logic for solving a cryptarithmetic puzzle
+   * using simple backtracking.
    */
   // the puzzle we want to solve
   private String puzzle;
@@ -124,6 +125,7 @@ public class Backtracking {
   public List<List<Node>> runBacktracking() {
     /**
      * This function runs the backtracking to solve the puzzle
+     * and prints any solutions found.
      * OUTPUT: A list of solutions
      */
     List<List<Node>> solutions = new ArrayList<>();
@@ -154,7 +156,7 @@ public class Backtracking {
     /**
      * This function begins the solving of a given puzzle.
      * INPUT: puzzle = the string containing the cryptarithmetic puzzle
-     * OUTPUT: True, of a solution was found; False, otherwise
+     * OUTPUT: no of solutions found
      */
     this.puzzle = puzzle;
     // parse the puzzle to obtain the list of letter nodes

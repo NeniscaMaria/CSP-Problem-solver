@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreeLettersOneCarry implements Constraint {
+  /**
+ * This class formulates the constraint for the sum of 2 digits must be equal to the 3rd digit + 10*carry.
+ * ex: TWO+TWO=FOUR <=> 132+132=0264
+ * This constraint stipulates that W+W=U+10*C1 <=> 3+3 = 6+10*0
+ */
   private Variable letter1;
   private Variable letter2;
   private Variable letter3;

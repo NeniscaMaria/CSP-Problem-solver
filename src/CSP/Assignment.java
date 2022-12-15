@@ -3,8 +3,14 @@ package CSP;
 import java.util.*;
 
 public class Assignment {
+  /**
+   * This class models an assignment of a number (or all)
+   * variables form a CSP
+   */
 
+  // the list of variables that have an assignment
   List<Variable> variables;
+  // a dictionary that maps each variable from variables to its assigned value
   Hashtable<Variable, Object> variableToValue;
 
   public Assignment() {
@@ -49,6 +55,11 @@ public class Assignment {
 
 
   public boolean isConsistent(List<Constraint> constraints) {
+    /**
+     * THis function that if an assignment is consistent with a number of constraints.
+     * INPUT: the list of constraints
+     * OUTPUT: True, if all constraints are satisfied. False, otherwise
+     */
     for (Constraint cons : constraints)
       if (!cons.isSatisfiedWith(this))
         return false;
@@ -56,6 +67,11 @@ public class Assignment {
   }
 
   public boolean isComplete(List<Variable> vars) {
+    /**
+     * Ths function checks whether an assignment has a value assigned to all variables.
+     * INPUT: the list of variables for which we need ot have values
+     * OUPUT: True, if all the variables from vars have values. False, otherwise.
+     */
     for (Variable var : vars) {
       if (!hasAssignmentFor(var))
         return false;
@@ -63,21 +79,11 @@ public class Assignment {
     return true;
   }
 
-
-  public boolean isSolution(CSP csp) {
-    return isConsistent(csp.getConstraints())
-        && isComplete(csp.getVariables());
-  }
-
-  public Assignment copy() {
-    Assignment copy = new Assignment();
-    for (Variable var : variables) {
-      copy.setAssignment(var, variableToValue.get(var));
-    }
-    return copy;
-  }
-
   public void printSolution(String puzzle) {
+    /**
+     * This function prints the solution to a Cryptarithmetic puzzle
+     * INPUT: the puzzle string.
+     */
     String sol = "";
     for (int i = 0; i < puzzle.length(); i++) {
       char c = puzzle.charAt(i);
@@ -90,16 +96,4 @@ public class Assignment {
     System.out.println("Solution: "+ sol);
   }
 
-  public void printSolution() {
-    boolean comma = false;
-    StringBuffer result = new StringBuffer("{");
-    for (Variable var : variables) {
-      if (comma)
-        result.append(", ");
-      result.append(var + "=" + variableToValue.get(var));
-      comma = true;
-    }
-    result.append("}");
-    System.out.println(result);
-  }
 }
