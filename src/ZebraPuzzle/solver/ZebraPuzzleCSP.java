@@ -1,6 +1,5 @@
 package ZebraPuzzle.solver;
 import CSP.*;
-import CryptarithmetixPuzzle.simpleBacktracking.Backtracking;
 import ZebraPuzzle.constraints.*;
 import ZebraPuzzle.constraints.AllVarsConstraint;
 
@@ -113,6 +112,11 @@ public class ZebraPuzzleCSP extends CSP{
     this.addConstraint(new TwoVariableConstraint(nameMapping.get("Blue Master"), nameMapping.get("Beer")));
     this.addConstraint(new TwoVariableConstraint(nameMapping.get("Prince"), nameMapping.get("German")));
     this.addConstraint(new VariableOrderConstraint(2, nameMapping.get("Blue")));
+    this.addConstraint(new FixedOrderHouses(nameMapping.get("Green"), nameMapping.get("White")));
+    this.addConstraint(new NeighborHousesConstraint(nameMapping.get("Horse"), nameMapping.get("Dunhill")));
+    this.addConstraint(new NeighborHousesConstraint(nameMapping.get("Blue"), nameMapping.get("Norwegian")));
+    this.addConstraint(new NeighborHousesConstraint(nameMapping.get("Cats"), nameMapping.get("Blend")));
+    this.addConstraint(new NeighborHousesConstraint(nameMapping.get("Water"), nameMapping.get("Blend")));
     this.addConstraint(new AllVarsConstraint(this.getVariables()));
   }
 
@@ -166,7 +170,6 @@ public class ZebraPuzzleCSP extends CSP{
       System.out.println(ANSI_RED + "No solution found for this puzzle." + ANSI_RESET);
     }else{
       System.out.println(ANSI_GREEN + "Total no. of solutions found: "+solutions.size() + ANSI_RESET);
-      System.out.println("Displaying one of them: ");
       Assignment solution = solutions.get(0);
       System.out.println("No. -  Pet  - Color - Drink -  Nation  - Cigarettes");
       System.out.println("---------------------------------------------------");
