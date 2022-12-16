@@ -29,6 +29,12 @@ public class TwoVariableConstraint implements Constraint {
   }
 
   @Override
+  public Integer getNoOfArcs() {
+    // it is a binary constraint, so only one arc
+    return 1;
+  }
+
+  @Override
   public boolean isSatisfiedWith(Assignment assignment) {
     Object value1 = assignment.getAssignment(new Variable(varName1));
     Object value2 = assignment.getAssignment(new Variable(varName2));

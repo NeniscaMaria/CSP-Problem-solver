@@ -67,6 +67,7 @@ public class Main {
         System.out.println("Invalid puzzle. Try again!");
       } else {
         CryptharihmeticPuzzle solver = new CryptharihmeticPuzzle(puzzle);
+        solver.displayGraphSize();
         solveUsingBackTracking(solver);
         solveUsingAC3BackTracking(solver);
         solveUsingFCBackTracking(solver);
@@ -76,6 +77,7 @@ public class Main {
 
   private static void zebraPuzzle() {
     ZebraPuzzleCSP solver = new ZebraPuzzleCSP();
+    solver.displayGraphSize();
     solveUsingBackTracking(solver);
     solveUsingAC3BackTracking(solver);
     solveUsingFCBackTracking(solver);

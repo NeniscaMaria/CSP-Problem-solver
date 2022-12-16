@@ -5,6 +5,7 @@ import CSP.Constraint;
 import CSP.Variable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class OneLetterOneCarryConstraint implements Constraint {
@@ -15,7 +16,7 @@ public class OneLetterOneCarryConstraint implements Constraint {
    */
   private Variable letter;
   private Variable carry;
-  private List<Variable> scope;
+  private HashSet<Variable> scope;
 
   public OneLetterOneCarryConstraint(Variable letter, Variable carry) {
     /**
@@ -24,14 +25,19 @@ public class OneLetterOneCarryConstraint implements Constraint {
      */
     this.letter = letter;
     this.carry = carry;
-    scope = new ArrayList<>(2);
+    scope = new HashSet<>();
     scope.add(letter);
     scope.add(carry);
   }
 
   @Override
   public List<Variable> getScope() {
-    return scope;
+    return new ArrayList<>(scope);
+  }
+
+  @Override
+  public Integer getNoOfArcs(){
+    return this.scope.size();
   }
 
   @Override

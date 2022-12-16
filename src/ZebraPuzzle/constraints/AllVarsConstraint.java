@@ -24,6 +24,11 @@ public class AllVarsConstraint implements Constraint {
   }
 
   @Override
+  public Integer getNoOfArcs() {
+    return scope.size();
+  }
+
+  @Override
   public boolean isSatisfiedWith(Assignment assignment) {
     /**
      * Here we check if each house has only 5 characteristics assigned to it: color, nation,

@@ -11,6 +11,9 @@ public interface Constraint {
   // function that gets the variable scope of a constraint.
   List<Variable> getScope();
 
+  // function that get the no of arcs in the constraint graph for this constraint
+  Integer getNoOfArcs();
+
   // function that checks if an assignment satisfies the constraint
   boolean isSatisfiedWith(Assignment assignment);
 }

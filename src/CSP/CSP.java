@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CSP {
   /**
@@ -146,6 +147,14 @@ public class CSP {
     double time = (endTime - startTime)/1000;
     System.out.println("Time: " + df.format(time) + " s" + ANSI_RESET);
     System.out.println();
+  }
+
+  public void displayGraphSize(){
+    /**
+     * Function that computes and displays the size of the constraint graph.
+     */
+    Integer size = this.getConstraints().stream().map(c -> c.getNoOfArcs()).reduce(0, Integer::sum);
+    System.out.println("The size of the constraint graph is: " + size);
   }
 
   public void solveFC() {}

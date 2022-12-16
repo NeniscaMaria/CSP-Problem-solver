@@ -2,7 +2,6 @@ package CryptarithmetixPuzzle.solver;
 
 import CSP.*;
 import CryptarithmetixPuzzle.constraints.*;
-import CryptarithmetixPuzzle.simpleBacktracking.Backtracking;
 import Util.PuzzleParser;
 
 import java.util.*;

@@ -28,6 +28,12 @@ public class VariableOrderConstraint implements Constraint {
   }
 
   @Override
+  public Integer getNoOfArcs() {
+    // it is a binary constraint, so only one arc
+    return 1;
+  }
+
+  @Override
   public boolean isSatisfiedWith(Assignment assignment) {
     Object value = assignment.getAssignment(new Variable(varName));
 

@@ -4,6 +4,7 @@ import CSP.Assignment;
 import CSP.Constraint;
 import CSP.Variable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,16 +16,21 @@ public class AllVarsConstraint implements Constraint {
    * digit (value) assigned to them.
    */
   private Integer noOfCarries;
-  private List<Variable> scope;
+  private HashSet<Variable> scope;
 
   public AllVarsConstraint(Integer noOfCarries, List<Variable> scope) {
     this.noOfCarries=noOfCarries;
-    this.scope = scope;
+    this.scope = new HashSet<>(scope);
   }
 
   @Override
   public List<Variable> getScope() {
-    return scope;
+    return new ArrayList<>(scope);
+  }
+
+  @Override
+  public Integer getNoOfArcs(){
+    return this.scope.size()-noOfCarries;
   }
 
   @Override

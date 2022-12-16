@@ -5,6 +5,7 @@ import CSP.Constraint;
 import CSP.Variable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class TwoLettersOneCarry implements Constraint {
@@ -16,13 +17,13 @@ public class TwoLettersOneCarry implements Constraint {
   private Variable letter1;
   private Variable letter2;
   private Variable carry;
-  private List<Variable> scope;
+  private HashSet<Variable> scope;
 
   public TwoLettersOneCarry(Variable letter1, Variable letter2, Variable carry) {
     this.letter1 = letter1;
     this.letter2 = letter2;
     this.carry = carry;
-    scope = new ArrayList<Variable>(3);
+    scope = new HashSet<>();
     scope.add(letter1);
     scope.add(letter2);
     scope.add(carry);
@@ -30,7 +31,12 @@ public class TwoLettersOneCarry implements Constraint {
 
   @Override
   public List<Variable> getScope() {
-    return scope;
+    return new ArrayList<>(scope);
+  }
+
+  @Override
+  public Integer getNoOfArcs(){
+    return this.scope.size();
   }
 
   @Override
