@@ -6,4 +6,5 @@ For both problems we implemented a basic backtracking algorithm (BT), a forward-
 
 More information about the solution and the problem can be found in 'documentation.pdf'.
 
+![img.png](img.png)
 
